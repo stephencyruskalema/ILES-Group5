@@ -23,7 +23,6 @@ export function HomePage({ user, stats }) {
       title: 'Student Placements',
       description: 'Manage internship allocations, track progress, and coordinate between students and host organizations.',
       path: '/placements',
-      // Check roles using includes to match uppercase fragments
       roles: ['STUDENT', 'COORDINATOR', 'ACADEMIC', 'INDUSTRY'],
     },
     {

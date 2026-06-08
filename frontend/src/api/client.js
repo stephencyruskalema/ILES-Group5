@@ -7,6 +7,8 @@ export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || LOCAL_BACKEND_U
 export const api = axios.create({
   baseURL: API_BASE_URL,
   headers: { 'Content-Type': 'application/json' },
+  // This is the critical addition for session-based authentication
+  withCredentials: true, 
 })
 
 export async function fetchWorkspace() {
@@ -53,5 +55,10 @@ export async function signupAccount(payload) {
 
 export async function loginAccount(payload) {
   const response = await api.post('/api/auth/login/', payload)
+  return response.data
+}
+
+export async function logoutAccount() {
+  const response = await api.post('/api/auth/logout/')
   return response.data
 }

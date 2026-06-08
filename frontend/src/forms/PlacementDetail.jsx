@@ -10,9 +10,8 @@ export function PlacementDetail({
   documents, 
   visits, 
   onClose, 
-  userRole // Added prop
+  userRole 
 }) {
-  // Normalize role
   const role = (userRole || '').toUpperCase()
   const isStudent = role.includes('STUDENT')
 

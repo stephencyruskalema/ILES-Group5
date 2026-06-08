@@ -13,10 +13,12 @@ from .views import (
     VisitViewSet,
     dashboard_stats,
     health_check,
-    login,
+    login_view,
+    logout_view,
     signup,
 )
 
+# Register your ViewSets for CRUD operations
 router = DefaultRouter()
 router.register("departments", DepartmentViewSet)
 router.register("companies", CompanyViewSet)
@@ -29,9 +31,17 @@ router.register("visits", VisitViewSet)
 router.register("documents", DocumentViewSet)
 
 urlpatterns = [
+    # Health Check
     path("health/", health_check, name="health-check"),
+    
+    # Auth Endpoints
     path("auth/signup/", signup, name="auth-signup"),
-    path("auth/login/", login, name="auth-login"),
+    path("auth/login/", login_view, name="auth-login"),
+    path("auth/logout/", logout_view, name="auth-logout"),
+    
+    # Dashboard Stats
     path("stats/", dashboard_stats, name="dashboard-stats"),
+    
+    # Resource endpoints (CRUD)
     path("", include(router.urls)),
 ]

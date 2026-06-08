@@ -32,7 +32,7 @@ DEMO_ACCOUNTS = [
         "password": "academic1234",
         "first_name": "Dr. Oliver",
         "last_name": "Watts",
-        "email": "oliver.watts@university.example", # Matched to supervisor email
+        "email": "oliver.watts@university.example", 
         "role": AccountProfile.ACADEMIC_SUPERVISOR,
     },
     {
@@ -40,7 +40,7 @@ DEMO_ACCOUNTS = [
         "password": "industry1234",
         "first_name": "Alex",
         "last_name": "Smith",
-        "email": "alex.smith@ncl.example", # Matched to supervisor email
+        "email": "alex.smith@ncl.example", 
         "role": AccountProfile.INDUSTRY_SUPERVISOR,
     },
     {
@@ -49,7 +49,7 @@ DEMO_ACCOUNTS = [
         "password": "student1234",
         "first_name": "Amina",
         "last_name": "Kamau",
-        "email": "amina.kamau@student.example", # Matched to student profile email
+        "email": "amina.kamau@student.example", 
         "role": AccountProfile.STUDENT,
     },
 ]

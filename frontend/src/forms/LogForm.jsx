@@ -2,7 +2,6 @@ import { useState } from 'react'
 import { todayISO } from '../utils/format'
 
 export function LogForm({ placements, onSubmit, onClose, saving, userRole }) {
-  // Normalize role
   const role = (userRole || '').toUpperCase()
   const isCoordinator = role.includes('COORDINATOR')
 
