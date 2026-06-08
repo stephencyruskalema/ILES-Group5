@@ -1,7 +1,8 @@
 from pathlib import Path
 import os
-import dj_database_url # Make sure to install this: pip install dj-database-url
+import dj_database_url
 
+# Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Use environment variables for security
@@ -28,7 +29,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
-    "whitenoise.middleware.WhiteNoiseMiddleware", # Essential for serving static files on Render
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "corsheaders.middleware.CorsMiddleware", 
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -40,7 +41,7 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = "backend.urls"
 
-# Database Configuration using dj_database_url
+# Database Configuration
 DATABASES = {
     'default': dj_database_url.config(
         default='sqlite:///' + str(BASE_DIR / 'db.sqlite3'),
@@ -58,7 +59,6 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
     "http://127.0.0.1:5173",
 ]
-# Add your live Vercel URL to CORS_ALLOWED_ORIGINS when you have it
 if 'FRONTEND_URL' in os.environ:
     CORS_ALLOWED_ORIGINS.append(os.environ['FRONTEND_URL'])
 
@@ -83,7 +83,7 @@ WSGI_APPLICATION = "backend.wsgi.application"
 
 # Static files settings (Required for Render)
 STATIC_URL = "static/"
-STATIC_ROOT = BASE_DIR / "staticfiles"
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 LANGUAGE_CODE = "en-us"
