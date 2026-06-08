@@ -1,12 +1,17 @@
 from pathlib import Path
 import os
+import dj_database_url # Make sure to install this: pip install dj-database-url
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = 'django-insecure-dev-key-change-this-for-production'
-DEBUG = True
+# Use environment variables for security
+SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-dev-key-change-this-for-production')
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+# Convert string 'False'/'True' to actual Python boolean
+DEBUG = os.environ.get('DEBUG', 'True') == 'True'
+
+# Allow Render host and local hosts
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '127.0.0.1,localhost').split(',')
 
 INSTALLED_APPS = [
     "corsheaders",
@@ -23,6 +28,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware", # Essential for serving static files on Render
     "corsheaders.middleware.CorsMiddleware", 
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -34,12 +40,12 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = "backend.urls"
 
-# Database Configuration 
+# Database Configuration using dj_database_url
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.config(
+        default='sqlite:///' + str(BASE_DIR / 'db.sqlite3'),
+        conn_max_age=600
+    )
 }
 
 # Rest Framework settings
@@ -47,11 +53,15 @@ REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": ["rest_framework.permissions.AllowAny"],
 }
 
-# CORS settings to allow your React Frontend
+# CORS settings
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
     "http://127.0.0.1:5173",
 ]
+# Add your live Vercel URL to CORS_ALLOWED_ORIGINS when you have it
+if 'FRONTEND_URL' in os.environ:
+    CORS_ALLOWED_ORIGINS.append(os.environ['FRONTEND_URL'])
+
 CORS_ALLOW_CREDENTIALS = True 
 
 TEMPLATES = [
@@ -70,9 +80,14 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "backend.wsgi.application"
+
+# Static files settings (Required for Render)
+STATIC_URL = "static/"
+STATIC_ROOT = BASE_DIR / "staticfiles"
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+
 LANGUAGE_CODE = "en-us"
 TIME_ZONE = "Africa/Nairobi"
 USE_I18N = True
 USE_TZ = True
-STATIC_URL = "static/"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
