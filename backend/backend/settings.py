@@ -2,17 +2,13 @@ from pathlib import Path
 import os
 import dj_database_url
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+# Build paths inside the project
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Use environment variables for security
+# Security
 SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-dev-key-change-this-for-production')
-
-# Convert string 'False'/'True' to actual Python boolean
-DEBUG = os.environ.get('DEBUG', 'True') == 'True'
-
-# Allow Render host and local hosts
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '127.0.0.1,localhost').split(',')
+DEBUG = os.environ.get('DEBUG', 'False') == 'True'
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '127.0.0.1,localhost,iles-backend-3u6f.onrender.com').split(',')
 
 INSTALLED_APPS = [
     "corsheaders",
@@ -41,7 +37,7 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = "backend.urls"
 
-# Database Configuration
+# Database
 DATABASES = {
     'default': dj_database_url.config(
         default='sqlite:///' + str(BASE_DIR / 'db.sqlite3'),
@@ -49,18 +45,25 @@ DATABASES = {
     )
 }
 
-# Rest Framework settings
+# Rest Framework
 REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": ["rest_framework.permissions.AllowAny"],
 }
 
-# CORS settings
+# CORS and CSRF Settings
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
     "http://127.0.0.1:5173",
 ]
-if 'FRONTEND_URL' in os.environ:
-    CORS_ALLOWED_ORIGINS.append(os.environ['FRONTEND_URL'])
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+]
+
+frontend_url = os.environ.get('FRONTEND_URL')
+if frontend_url:
+    CORS_ALLOWED_ORIGINS.append(frontend_url)
+    CSRF_TRUSTED_ORIGINS.append(frontend_url)
 
 CORS_ALLOW_CREDENTIALS = True 
 
@@ -81,7 +84,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "backend.wsgi.application"
 
-# Static files settings (Required for Render)
+# Static files
 STATIC_URL = "static/"
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
@@ -91,4 +94,3 @@ TIME_ZONE = "Africa/Nairobi"
 USE_I18N = True
 USE_TZ = True
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-

@@ -1,6 +1,7 @@
 import axios from 'axios'
 
-// Direct connection string to your local running Django development instance
+// This will use the URL from your .env file in production (Vercel)
+// or default to your local Django server for development
 const LOCAL_BACKEND_URL = 'http://127.0.0.1:8000'
 export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || LOCAL_BACKEND_URL
 
